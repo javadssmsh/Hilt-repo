@@ -4,11 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
@@ -48,9 +47,11 @@ constructor(
     }
 }
 
-class SomeInterfaceImplementation
+class SomeInterfaceImpl
 @Inject
-constructor() : SomeInterface {
+constructor(
+    private val someDependency: String
+) : SomeInterface {
 
     override fun getString(): String {
         return "A Thing !"
@@ -61,21 +62,30 @@ interface SomeInterface {
     fun getString(): String
 }
 
-@InstallIn(ActivityComponent::class)
+@InstallIn(ApplicationComponent::class)
 @Module
-abstract class MyModule() {
+class MyModule() {
 
-    @ActivityScoped
-    @Binds
-    abstract fun bindSomeDependency(
-        someImp: SomeInterfaceImplementation
-    ): SomeInterface
+    @Singleton
+    @Provides
+    fun provideSomeString(): String {
+        return "some string "
+    }
 
-    @ActivityScoped
-    @Binds
-    abstract fun bindGson(
-        gSon: Gson
-    ): Gson
+    @Singleton
+    @Provides
+    fun provideSomeInterface(
+        someString: String
+    ): SomeInterface {
+        return SomeInterfaceImpl(someString)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
 
 }
 
