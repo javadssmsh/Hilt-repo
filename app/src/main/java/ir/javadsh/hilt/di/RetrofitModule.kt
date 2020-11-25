@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import ir.javadsh.hilt.model.Blog
 import ir.javadsh.hilt.retrofit.BlogNetworkEntity
+import ir.javadsh.hilt.retrofit.BlogRetrofit
 import ir.javadsh.hilt.retrofit.NetworkMapper
 import ir.javadsh.hilt.utils.EntityMapper
 import retrofit2.Retrofit
@@ -43,5 +44,9 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideBlogRet
+    fun provideBlogService(retrofit: Retrofit.Builder): BlogRetrofit {
+        return retrofit
+            .build()
+            .create(BlogRetrofit::class.java)
+    }
 }
