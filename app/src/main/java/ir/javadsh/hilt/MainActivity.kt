@@ -1,34 +1,24 @@
 package ir.javadsh.hilt
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import com.google.gson.Gson
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
+import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.components.ApplicationComponent
-import dagger.hilt.android.scopes.ActivityScoped
-import javax.inject.Inject
-import javax.inject.Qualifier
-import javax.inject.Singleton
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    //field injection
-    @Inject
-    lateinit var someClass: SomeClass
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        println(someClass.doAThing1())
-        println(someClass.doAThing2())
     }
 }
+
+
+
+/*
 
 @AndroidEntryPoint
 class MyFragment : Fragment() {
@@ -106,5 +96,6 @@ class MyModule() {
     annotation class Impl2
 
 }
+*/
 
 
