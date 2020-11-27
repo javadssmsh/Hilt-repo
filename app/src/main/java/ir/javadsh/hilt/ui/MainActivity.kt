@@ -1,25 +1,52 @@
-package ir.javadsh.hilt
+package ir.javadsh.hilt.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
+import ir.javadsh.hilt.R
+import ir.javadsh.hilt.model.Blog
+import ir.javadsh.hilt.utils.DataState
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
     }
+
+    private fun subscribeObservers() {
+        viewModel.dataState.observe(this, Observer { datastate ->
+            when (datastate) {
+                is DataState.Success<List<Blog>> -> {
+                    // todo
+                }
+                is DataState.Error -> {
+
+                }
+                is DataState.Loading -> {
+
+                }
+            }
+        })
+    }
+
+    private fun displayError(message: String?) {
+        if (message != null) {
+
+        }else{
+
+        }
+    }
 }
 
 
-
 /*
-
 @AndroidEntryPoint
 class MyFragment : Fragment() {
 
