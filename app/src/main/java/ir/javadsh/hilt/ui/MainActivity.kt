@@ -1,6 +1,9 @@
 package ir.javadsh.hilt.ui
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -8,15 +11,25 @@ import dagger.hilt.android.AndroidEntryPoint
 import ir.javadsh.hilt.R
 import ir.javadsh.hilt.model.Blog
 import ir.javadsh.hilt.utils.DataState
+import java.lang.StringBuilder
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    lateinit var text: TextView
+    lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        text = findViewById(R.id.massage_text)
+        progressBar = findViewById(R.id.progress_bar_loading)
+
+        subscribeObservers()
+        viewModel.setStateEvent(MainStateEvent.GetBlogEvent)
 
     }
 
@@ -24,13 +37,15 @@ class MainActivity : AppCompatActivity() {
         viewModel.dataState.observe(this, Observer { datastate ->
             when (datastate) {
                 is DataState.Success<List<Blog>> -> {
-                    // todo
+                    displayProgressBar(false)
+                    appendBlogTitles(datastate.data)
                 }
                 is DataState.Error -> {
-
+                    displayProgressBar(false)
+                    displayError(datastate.exception.message)
                 }
                 is DataState.Loading -> {
-
+                    displayProgressBar(true)
                 }
             }
         })
@@ -38,10 +53,22 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayError(message: String?) {
         if (message != null) {
-
-        }else{
-
+            text.text = message
+        } else {
+            text.text = getString(R.string.unknown_error)
         }
+    }
+
+    private fun displayProgressBar(isDisplay: Boolean) {
+        progressBar.visibility = if (isDisplay) View.VISIBLE else View.GONE
+    }
+
+    private fun appendBlogTitles(blogs: List<Blog>) {
+        val sb = StringBuilder()
+        for (blog in blogs) {
+            sb.append(blog.title + "\n")
+        }
+        text.text = sb.toString()
     }
 }
 
