@@ -8,68 +8,36 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
+import ir.javadsh.hilt.MainFragment
+import ir.javadsh.hilt.MainFragmentFactory
 import ir.javadsh.hilt.R
 import ir.javadsh.hilt.model.Blog
 import ir.javadsh.hilt.utils.DataState
 import java.lang.StringBuilder
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by viewModels()
 
-    lateinit var text: TextView
-    lateinit var progressBar: ProgressBar
+
+
+    @Inject
+    lateinit var fragmentFactory: MainFragmentFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        text = findViewById(R.id.massage_text)
-        progressBar = findViewById(R.id.progress_bar_loading)
+        supportFragmentManager.fragmentFactory = fragmentFactory
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_fragment_container, MainFragment::class.java, null)
+            .commit()
 
-        subscribeObservers()
-        viewModel.setStateEvent(MainStateEvent.GetBlogEvent)
 
     }
 
-    private fun subscribeObservers() {
-        viewModel.dataState.observe(this, Observer { datastate ->
-            when (datastate) {
-                is DataState.Success<List<Blog>> -> {
-                    displayProgressBar(false)
-                    appendBlogTitles(datastate.data)
-                }
-                is DataState.Error -> {
-                    displayProgressBar(false)
-                    displayError(datastate.exception.message)
-                }
-                is DataState.Loading -> {
-                    displayProgressBar(true)
-                }
-            }
-        })
-    }
 
-    private fun displayError(message: String?) {
-        if (message != null) {
-            text.text = message
-        } else {
-            text.text = getString(R.string.unknown_error)
-        }
-    }
-
-    private fun displayProgressBar(isDisplay: Boolean) {
-        progressBar.visibility = if (isDisplay) View.VISIBLE else View.GONE
-    }
-
-    private fun appendBlogTitles(blogs: List<Blog>) {
-        val sb = StringBuilder()
-        for (blog in blogs) {
-            sb.append(blog.title + "\n")
-        }
-        text.text = sb.toString()
-    }
 }
 
 
