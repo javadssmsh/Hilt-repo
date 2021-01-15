@@ -38,7 +38,7 @@ object RetrofitModule {
     @Provides
     fun provideRetrofit(gSon: Gson): Retrofit.Builder {
         return Retrofit.Builder()
-            .baseUrl("https://open-api/.xyz/placeholder/")
+            .baseUrl("https://open-api.xyz/placeholder/")
             .addConverterFactory(GsonConverterFactory.create(gSon))
     }
 
