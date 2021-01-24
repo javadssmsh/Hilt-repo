@@ -1,4 +1,4 @@
-package ir.javadsh.hilt
+package ir.javadsh.hilt.ui
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory

@@ -1,39 +1,19 @@
 package ir.javadsh.hilt.ui
 
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
-import ir.javadsh.hilt.MainFragment
-import ir.javadsh.hilt.MainFragmentFactory
 import ir.javadsh.hilt.R
-import ir.javadsh.hilt.model.Blog
-import ir.javadsh.hilt.utils.DataState
-import java.lang.StringBuilder
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
-@AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class MainActivity : AppCompatActivity() {
 
-
-
-
-    @Inject
-    lateinit var fragmentFactory: MainFragmentFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        supportFragmentManager.fragmentFactory = fragmentFactory
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_fragment_container, MainFragment::class.java, null)
-            .commit()
-
 
     }
 

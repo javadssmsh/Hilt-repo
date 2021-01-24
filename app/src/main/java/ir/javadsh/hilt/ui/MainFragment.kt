@@ -1,4 +1,4 @@
-package ir.javadsh.hilt
+package ir.javadsh.hilt.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import dagger.hilt.android.AndroidEntryPoint
+import ir.javadsh.hilt.R
 import ir.javadsh.hilt.model.Blog
-import ir.javadsh.hilt.ui.MainStateEvent
-import ir.javadsh.hilt.ui.MainViewModel
 import ir.javadsh.hilt.utils.DataState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.lang.StringBuilder
